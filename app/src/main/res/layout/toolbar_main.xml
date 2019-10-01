@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:theme="@style/AppTheme.FullScreen">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="25dp"
+                android:text="@string/NCU"
+                android:textSize="25sp" />
+
+            <ImageButton
+                android:id="@+id/searchImage"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:adjustViewBounds="false"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/ic_search_black_24p" />
+        </android.support.v7.widget.Toolbar>
+
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+</merge>

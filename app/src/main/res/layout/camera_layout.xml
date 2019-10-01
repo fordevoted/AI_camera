@@ -1,0 +1,251 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:weightSum="20">
+
+    <TextureView
+        android:id="@+id/texture_view_camera2_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"/>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/textSize_normal"
+        android:layout_marginBottom="@dimen/textSize_normal"
+        android:contentDescription="@string/action_clear_search"
+        android:src="@drawable/ai_image"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.2" />
+
+
+
+
+    <ImageButton
+        android:id="@+id/ib_bright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@null"
+        android:src="@drawable/bright32"
+        android:visibility="visible"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.3" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+
+        app:layout_constraintTop_toBottomOf="@id/ib_bright"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        android:minHeight="5dp"
+        android:maxHeight="5dp"
+        android:max="100"
+        android:thumbTint="@color/white"
+        android:progressDrawable="@drawable/seekbar_progress"
+        android:visibility="gone"
+        />
+
+
+    <ImageButton
+        android:id="@+id/ib_iso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/iso32"
+        android:background="@null"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ib_bright"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"/>
+    <ImageButton
+        android:id="@+id/ib_contrast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/contrast32"
+        android:visibility="visible"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ib_iso"
+        app:layout_constraintHorizontal_bias="0.3"/>
+
+    <ImageButton
+        android:id="@+id/camera_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:contentDescription="@string/this_is_photo_is_used_to_test_and_it_is_cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooool"
+        android:src="@drawable/circle_1"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint4"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintDimensionRatio="0.85:1"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:visibility="gone"
+        android:background="#FFFFFF">
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/iv_show"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.95"
+            app:layout_constraintDimensionRatio="1:1.1"
+
+            android:contentDescription="@string/todo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/loadingg"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+
+            android:visibility="gone"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton_quary"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:contentDescription="@string/action_clear_search"
+        android:src="@drawable/location1"
+        android:visibility="visible"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.98"
+        app:layout_constraintWidth_percent="0.2" />
+
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/this_is_photo_is_used_to_test_and_it_is_cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooool"
+        android:drawableTop="@drawable/back"
+        style="?android:attr/borderlessButtonStyle"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <Button
+        android:id="@+id/button_save"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/this_is_photo_is_used_to_test_and_it_is_cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooool"
+        android:drawableTop="@drawable/save"
+        style="?android:attr/borderlessButtonStyle"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        android:visibility="gone" />
+    <Button
+        android:id="@+id/button_suggestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        style="?android:attr/borderlessButtonStyle"
+        android:contentDescription="@string/this_is_photo_is_used_to_test_and_it_is_cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooool"
+        android:drawableTop="@drawable/info"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/scoreShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:textColor="#555555"
+        app:layout_constraintTop_toBottomOf="@id/constraint4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.2"
+
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/i_am_scoreshow"
+        android:textSize="36sp"
+        android:visibility="gone" />
+    <ImageButton
+
+        android:id="@+id/ib_score_light"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/this_is_photo_is_used_to_test_and_it_is_cooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooool"
+        android:src="@drawable/greenlight32"
+
+
+        app:layout_constraintTop_toBottomOf="@id/constraint4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.24"
+        android:paddingBottom="5dp"
+        app:layout_constraintRight_toLeftOf="@id/scoreShow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintDimensionRatio="0.5"
+        android:visibility="gone"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>

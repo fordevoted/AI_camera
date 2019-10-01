@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bn_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="@dimen/textSize_normal"
+        android:background="@null"
+        android:text="@string/modify_user_name"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/bn_user_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@null"
+        android:text="@string/modify_status"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/bn_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@null"
+        android:text="@string/change_profile"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/bn_sign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@null"
+        android:text="@string/log_in"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/bn_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@null"
+        android:text="@string/sign_up"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+
+</LinearLayout>

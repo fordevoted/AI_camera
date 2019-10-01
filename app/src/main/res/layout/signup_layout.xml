@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textlayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_sign"
+        app:layout_constraintWidth_percent="0.7"
+        app:hintTextAppearance="@style/TextInputHint">
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/account"
+            android:inputType=""
+            android:textColor="#ffffff"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textlayout1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textlayout"
+        app:layout_constraintWidth_percent="0.7"
+        app:hintTextAppearance="@style/TextInputHint">
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textlayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#ffffff"
+        android:textColorHint="#ffffff"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textlayout1"
+        app:layout_constraintWidth_percent="0.7"
+        app:hintTextAppearance="@style/TextInputHint">
+
+        <EditText
+            android:id="@+id/et_password_again"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/check_password_again"
+            android:inputType="textPassword"
+            android:textColor="#ffffff"/>
+    </android.support.design.widget.TextInputLayout>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:src="@drawable/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@null"/>
+
+    <TextView
+        android:id="@+id/tv_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_to_ai_camera"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/iv_icon"
+        android:textColor="#ffffff"/>
+
+    <ImageButton
+        android:id="@+id/ib_text_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+
+        android:layout_marginTop="15dp"
+        android:contentDescription="@string/password"
+        android:src="@drawable/eye_close_24"
+        app:layout_constraintLeft_toRightOf="@id/textlayout1"
+        app:layout_constraintTop_toBottomOf="@id/textlayout" />
+
+    <Button
+        android:id="@+id/bn_sign"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:background="#545454"
+        android:padding="10dp"
+        android:text="@string/sign_up"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textlayout2"
+        app:layout_constraintWidth_percent="0.7" />
+    <pl.droidsonroids.gif.GifImageView
+
+        android:id="@+id/iv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/loading100"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bn_sign"
+        app:layout_constraintWidth_percent="0.7"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#0088ff"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading"
+        app:layout_constraintWidth_percent="0.7" />
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

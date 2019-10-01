@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:weightSum="1"
+    android:visibility="visible"
+    android:focusable="true"
+    android:clickable="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/profile_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:background="#EEFFFEFF">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:elevation="25dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="50dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55"
+            app:layout_constraintWidth_percent="0.2">
+
+            <pl.droidsonroids.gif.GifImageButton
+                android:id="@+id/ib_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="@string/user"
+
+                android:src="@drawable/app_icon" />
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/user_name"
+
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/user"
+            android:textSize="18sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1.5:1"
+            app:layout_constraintHorizontal_bias="0.5"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="0.55"
+            app:layout_constraintWidth_percent="0.3" />
+
+        <TextView
+            android:id="@+id/user_status"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/user_status"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintDimensionRatio="3:1"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.6"
+            app:layout_constraintWidth_percent="0.27" />
+
+        <ImageButton
+            android:id="@+id/setting"
+
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@null"
+            android:contentDescription="@string/infomation"
+
+            android:src="@drawable/ic_setting_black_24p"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55"
+            app:layout_constraintWidth_percent="0.2" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+
+            android:layout_marginTop="35dp"
+
+            android:background="#AA555555"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintDimensionRatio="200:1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+    </android.support.constraint.ConstraintLayout>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:layout_marginTop="15dp">
+        <android.support.constraint.ConstraintLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:baselineAligned="false">
+            <TableLayout
+                android:id="@+id/tablelayout_record"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintWidth_percent="0.1"
+                app:layout_constraintDimensionRatio="2:1"
+                app:layout_constraintTop_toBottomOf="@id/tv_record_container"
+                android:background="@drawable/border"
+                android:backgroundTint="#EEEEEE"
+                android:collapseColumns="3,4"
+                android:paddingTop="3dip"
+                android:stretchColumns="0"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp">
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/iv_unshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="20dp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/untake_picture" />
+            </TableLayout>
+            <TableLayout
+                android:id="@+id/tablelayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:background="@drawable/border"
+                android:backgroundTint="#EEEEEE"
+                android:collapseColumns="3,4"
+                android:paddingTop="10dip"
+                app:layout_constraintTop_toBottomOf="@id/tv_collection"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:stretchColumns="0">
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/iv_unlike"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/unlike_notification" />
+            </TableLayout>
+
+
+
+            <TextView
+                android:id="@+id/tv_collection"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="#757575"
+                android:text="@string/collection"
+                android:drawableStart="@drawable/heart1"
+                android:drawablePadding="5dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tablelayout_record"/>
+
+            <android.support.constraint.ConstraintLayout
+
+                android:id="@+id/tv_record_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:backgroundTint="#757575"
+                    android:drawableStart="@drawable/history32"
+                    android:drawablePadding="5dp"
+                    android:text="@string/record"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <ImageButton
+                    android:id="@+id/uploadImage"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/uploadimage32"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+        <TextView
+            android:id="@+id/tv_adjust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/textSize_normal"
+            android:text="@string/maybe_you_can_try"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            android:visibility="visible" />
+        <LinearLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="end">
+
+            <ImageButton
+                android:id="@+id/ib_save_suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@null"
+                android:src="@drawable/save"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/iv_suggestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/score"
+        android:src="@drawable/loading100"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_adjust_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/textSize_normal"
+
+        android:text="@string/light_constast"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+</LinearLayout>

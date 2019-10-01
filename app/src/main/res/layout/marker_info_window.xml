@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_capsule">
+
+
+
+    <ImageView
+        android:id="@+id/iv_poi_image"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="10dp"
+        android:src="@drawable/bright"/>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_poi_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/title"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        />
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toEndOf="@id/iv_poi_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/todo"
+        android:textSize="12sp"
+
+        android:textColor="@color/white"
+        android:padding="10dp"
+        />
+    <TextView
+        android:id="@+id/tv_angleDirection"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_content"
+        app:layout_constraintStart_toEndOf="@id/iv_poi_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/todo"
+        android:textSize="12sp"
+
+        android:textColor="@color/white"
+        android:padding="10dp"
+        />
+
+</android.support.constraint.ConstraintLayout>
