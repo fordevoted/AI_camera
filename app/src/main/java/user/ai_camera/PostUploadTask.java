@@ -25,6 +25,7 @@ import java.util.List;
 public class PostUploadTask extends AsyncTask<String, Void, String> {
 	public List<List<Double>> scoreResult = new ArrayList<>();
 	public boolean isJSONEmpty = true;
+	public boolean isPhotoCrop = false;
 	public Drawable img ;
 	public float[] direction;
 	public String keyword;
@@ -71,7 +72,7 @@ public class PostUploadTask extends AsyncTask<String, Void, String> {
 				//if(scoreResult.get(scoreResult.size()-1).get(1) == 0 && scoreResult.get(scoreResult.size()-1).get(2) == 0){
 				//	break;
 				//}
-
+			isPhotoCrop = jObject.getJSONArray("results").getJSONObject(1).getBoolean("crop");
 			isJSONEmpty = jObject.getJSONArray("results").getJSONObject(1).length() == 0;
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -86,6 +87,9 @@ public class PostUploadTask extends AsyncTask<String, Void, String> {
 		}
 	}
 
+	public boolean isCrop(){
+		return isPhotoCrop;
+	}
 	public List<List<Double>> suggestionBack(){
 		if(!isJSONEmpty) {
 			return scoreResult;
@@ -109,6 +113,9 @@ public class PostUploadTask extends AsyncTask<String, Void, String> {
 			httppost.setEntity(MultipartEntityBuilder.create().addPart("image", new ByteArrayBody(data, stringBuilder.toString()))
 					.addTextBody("location",keyword)
 					.addTextBody("direction", String.valueOf(direction[0]))
+					.addTextBody("z", String.valueOf(direction[0]))
+					.addTextBody("y", String.valueOf(direction[1]))
+					.addTextBody("x", String.valueOf(direction[2]))
 					.build()
 			);
 

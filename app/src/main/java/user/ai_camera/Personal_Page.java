@@ -65,6 +65,7 @@ public class Personal_Page extends Fragment {
 	public String authentication;
 	public  Bitmap user_profile;
 	public pl.droidsonroids.gif.GifImageView iv_unlike;
+	public Handler initHandler = new Handler();
 
 
 	public Runnable run2;
@@ -100,7 +101,8 @@ public class Personal_Page extends Fragment {
 				msharedPreferences.getString("user_name", msharedPreferences.getString("ACCOUNT",getResources().getString(R.string.user))),
 				msharedPreferences.getString("user_status", getResources().getString(R.string.user_status)));
 		get_userInfoTask.execute("http://140.115.51.177:8000/userfunction/api=user_info");
-		RetrieveImageTask retrieveImageTask = new RetrieveImageTask(size,false);
+		BitmapDrawable bitmapDrawable = (BitmapDrawable) ContextCompat.getDrawable(getContext(),R.drawable.app_icon);
+		RetrieveImageTask retrieveImageTask = new RetrieveImageTask(size,false,bitmapDrawable.getBitmap());
 		Log.d("Personal onviewCreated test"," FAVTASK execute");
 		Handler handler = new Handler();
 		Runnable run = new Runnable() {
@@ -416,7 +418,7 @@ public class Personal_Page extends Fragment {
 		return path;
 	}
 	private void initcollection(List<Map<String,String>> collection){
-		int index = 0;
+		final int[] index = {0};
 		/*if(collection.size() != 0 ) {
 			iv_unlike.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.loadingg));
 		} else{
@@ -424,159 +426,170 @@ public class Personal_Page extends Fragment {
 		}*/
 
 
-		while(index < collection.size()){
-			TableRow tableRow = new TableRow(getContext());
-			TableRow.LayoutParams tablelayoutParam = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-			tablelayoutParam.weight = 1 ;
-			tableRow.setWeightSum(1);
-			tableRow.setLayoutParams(tablelayoutParam);
-			tableRow.setBackgroundColor(Color.parseColor("#EEEEEE"));
-			ImageButton ib;
+		Runnable run  = new Runnable() {
+			@Override
+			public void run() {
+				if(getContext()!= null){
+					while(index[0] < collection.size()){
+						TableRow tableRow = new TableRow(getContext());
+						TableRow.LayoutParams tablelayoutParam = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+						tablelayoutParam.weight = 1 ;
+						tableRow.setWeightSum(1);
+						tableRow.setLayoutParams(tablelayoutParam);
+						tableRow.setBackgroundColor(Color.parseColor("#EEEEEE"));
+						ImageButton ib;
 
-			for(int i = 0 ; i < 3 ; i ++){
-				Log.d("Personal Put collection", (collection.get(index).get("url")));
-				ib = new ImageButton(getContext());
-				TableRow.LayoutParams layoutParam = new TableRow.LayoutParams();
-				layoutParam.weight = 0.3333f;
-				layoutParam.column = i;
-				layoutParam.width = 0;
-				layoutParam.height = TableRow.LayoutParams.WRAP_CONTENT;
-				layoutParam.setMargins(2,2,2,2);
-				ib.setLayoutParams(layoutParam);
-				ib.setBackgroundResource(0);// background @null
-				RetrieveImageTask retrieveImageTask;
-				if(index ==0){
-					retrieveImageTask =  new RetrieveImageTask(ib,size,true,true,iv_unlike);
-				}else{
-					retrieveImageTask =  new RetrieveImageTask(ib,size,false,true);
-				}
-				retrieveImageTask.execute(collection.get(index).get("url"));
-				tableRow.addView(ib);
-				ImageButton finalIb = ib;
-				final int finalIndex = index;
-				ib.setOnLongClickListener(new View.OnLongClickListener() {
-					@Override
-					public boolean onLongClick(View view) {
-						BackgroundBlurPopupWindow mPopupWindow;
-						View v = getActivity().getLayoutInflater().inflate(R.layout.popup_layout, null);
-						ImageView iv = v.findViewById(R.id.imageView_browse);
-						iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-							@Override
-							public void onGlobalLayout() {
-								iv.setImageBitmap(Bitmap.createScaledBitmap(((BitmapDrawable)(finalIb.getDrawable())).getBitmap(), iv.getMeasuredWidth(), iv.getMeasuredHeight(),true));
+						for(int i = 0 ; i < 3 ; i ++){
+							Log.d("Personal Put collection", (collection.get(index[0]).get("url")));
+							ib = new ImageButton(getContext());
+							TableRow.LayoutParams layoutParam = new TableRow.LayoutParams();
+							layoutParam.weight = 0.3333f;
+							layoutParam.column = i;
+							layoutParam.width = 0;
+							layoutParam.height = TableRow.LayoutParams.WRAP_CONTENT;
+							layoutParam.setMargins(2,2,2,2);
+							ib.setLayoutParams(layoutParam);
+							ib.setBackgroundResource(0);// background @null
+							RetrieveImageTask retrieveImageTask;
+							if(index[0] ==0){
+								retrieveImageTask =  new RetrieveImageTask(ib,size,true,true,iv_unlike);
+							}else{
+								retrieveImageTask =  new RetrieveImageTask(ib,size,false,true);
 							}
-						});
-						View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.main_layout, null);
-						mPopupWindow = new BackgroundBlurPopupWindow(v , WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, getActivity(), true);
-						mPopupWindow.setFocusable(true);
-						mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-						mPopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);//弹出PopupWindow
-						return false;
-					}
-				});
-				ib.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						Handler photoFrameHandler = new Handler();
-						photoFrameHandler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								//swipeRefreshLayout.setVisibility(View.GONE);
-
-								((MainActivity)getActivity()).mFragmentTransaction = ((MainActivity)getActivity()).mFragmentManager.beginTransaction();
-								int position;
-								String keyword;
-								String url;
-								String name;
-								assert  (collection.get(finalIndex).get("url")) != null;
-								{
-									url = collection.get(finalIndex).get("url");
-									position = (int)(Math.random()*((MainActivity)getActivity()).imgUrl.size()*0.8); //*0.8 for ensure it won't be the size of imgurl
-									keyword = (collection.get(finalIndex).get("keyword"));
-									name = collection.get(finalIndex).get("name");
-								}
-
-								Log.d("personal image button name test",name);
-								Log.d("personal image button position test",String.format("index: %d, position: %d",finalIndex,position));
-								if (((MainActivity)getActivity()).mPhotoFragment == null){
-									if(!((MainActivity)getActivity()).mPhotoFragmentMap.containsKey(999)){
-										((MainActivity)getActivity()).mPhotoFragment = new Photo_detail();
-										Log.d("Personal new fragment test","Yes, new Photo_detail create");
-										//((MainActivity)getActivity()).mPhotoFragmentMap.put(999,((MainActivity)getActivity()).mPhotoFragment);
-									}else{
-										((MainActivity)getActivity()).mPhotoFragment = ((MainActivity)getActivity()).mPhotoFragmentMap.get(999);
-									}
-								}
-
-
-								Bundle bundle = new Bundle();
-								ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-								bundle.putString("byteArray",
-										url);
-								ArrayList<Integer> visitList = new ArrayList<Integer>();
-								for(int i = 2 ; i < 5 ; i++){
-									String img_name= null;
-									if(position + i < ((MainActivity)getActivity()).imgUrl.size()){
-										img_name = ((MainActivity)getActivity()).imgUrl.get(position + i).get("name");
-									}
-									if(img_name == null){
-										int j = 1;
-										int count = 0;
-										//Log.d("Main Bytearray Test","suggestion"+String.valueOf(i-1)+" size is  :"+adapter.dictionary.size());
-										while(img_name == null && count < ((MainActivity)getActivity()).adapter.dictionary.size()){
-											j = (int)(Math.random() * ((MainActivity)getActivity()).adapter.dictionary.size());
-											count++;
-											if(!visitList.contains(j)){
-												img_name = (((MainActivity)getActivity()).imgUrl.get(j).get("name"));
-											}
-											//Log.d("Main Bytearray Test","count :"+ count +"j  :"+j+" size is  :"+adapter.dictionary.size());
+							retrieveImageTask.execute(collection.get(index[0]).get("url"));
+							tableRow.addView(ib);
+							ImageButton finalIb = ib;
+							final int finalIndex = index[0];
+							ib.setOnLongClickListener(new View.OnLongClickListener() {
+								@Override
+								public boolean onLongClick(View view) {
+									BackgroundBlurPopupWindow mPopupWindow;
+									View v = getActivity().getLayoutInflater().inflate(R.layout.popup_layout, null);
+									ImageView iv = v.findViewById(R.id.imageView_browse);
+									iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+										@Override
+										public void onGlobalLayout() {
+											iv.setImageBitmap(Bitmap.createScaledBitmap(((BitmapDrawable)(finalIb.getDrawable())).getBitmap(), iv.getMeasuredWidth(), iv.getMeasuredHeight(),true));
 										}
-										visitList.add(j) ;
-										Log.d("Main Bytearray Test","suggestion"+String.valueOf(i-1) + " j is  :" + j);
-										bundle.putString("suggestion"+String.valueOf(i-1)+" position",String.valueOf(j-1));
-									}else{
-										bundle.putString("suggestion"+String.valueOf(i-1)+" position",String.valueOf(position+i-1));
-									}
-									if(byteArrayStream.toByteArray().length == 0){
-										Log.d("Photo delivery","Failed");
-									}
-									img_name = "http://140.115.51.177:8000/media/" + keyword + "/" + img_name;
-									bundle.putString("suggestion"+String.valueOf(i-1), img_name);
-
+									});
+									View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.personal_layout, null);
+									mPopupWindow = new BackgroundBlurPopupWindow(v , WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, getActivity(), true);
+									mPopupWindow.setFocusable(true);
+									mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+									mPopupWindow.showAtLocation(rootView, Gravity.CENTER, 0, 0);//弹出PopupWindow
+									return false;
 								}
-								bundle.putString("personal","true");
-								bundle.putString("position",String.valueOf(position));
-								bundle.putString("score",((MainActivity)getActivity()).imgUrl.get(position+1).get("score"));
-								bundle.putString("keyword", keyword);
-								bundle.putBoolean("heart",true);
-								bundle.putString("name",name);
-								Log.d("personal image test",String.format("image show: %s, suggestion1: %s, suggestion2: %s, suggestion3: %s"
-										,bundle.getString("byteArray"),bundle.getString("suggestion1")
-										,bundle.getString("suggestion2"),bundle.getString("suggestion3")));
+							});
+							ib.setOnClickListener(new View.OnClickListener() {
+								@Override
+								public void onClick(View view) {
+									Handler photoFrameHandler = new Handler();
+									photoFrameHandler.postDelayed(new Runnable() {
+										@Override
+										public void run() {
+											//swipeRefreshLayout.setVisibility(View.GONE);
 
-								//Toast.makeText(getApplicationContext(),"From Main to Photo_detail",Toast.LENGTH_SHORT).show();
+											((MainActivity)getActivity()).mFragmentTransaction = ((MainActivity)getActivity()).mFragmentManager.beginTransaction();
+											int position;
+											String keyword;
+											String url;
+											String name;
+											assert  (collection.get(finalIndex).get("url")) != null;
+											{
+												url = collection.get(finalIndex).get("url");
+												position = (int)(Math.random()*((MainActivity)getActivity()).imgUrl.size()*0.8); //*0.8 for ensure it won't be the size of imgurl
+												keyword = (collection.get(finalIndex).get("keyword"));
+												name = collection.get(finalIndex).get("name");
+											}
 
-								((MainActivity)getActivity()).personalFragmentStack.add(((MainActivity)getActivity()).mPhotoFragment);
-								((MainActivity)getActivity()).mPhotoFragment.setArguments(bundle);
-								if (((MainActivity)getActivity()).mPhotoFragment.isAdded()) {
-									((MainActivity)getActivity()).mFragmentManager.beginTransaction().remove(((MainActivity)getActivity()).mPhotoFragment).commit();
-									((MainActivity)getActivity()).mainFragmentStack.remove(((MainActivity)getActivity()).mPhotoFragment);
+											Log.d("personal image button name test",name);
+											Log.d("personal image button position test",String.format("index: %d, position: %d",finalIndex,position));
+											if (((MainActivity)getActivity()).mPhotoFragment == null){
+												if(!((MainActivity)getActivity()).mPhotoFragmentMap.containsKey(999)){
+													((MainActivity)getActivity()).mPhotoFragment = new Photo_detail();
+													Log.d("Personal new fragment test","Yes, new Photo_detail create");
+													//((MainActivity)getActivity()).mPhotoFragmentMap.put(999,((MainActivity)getActivity()).mPhotoFragment);
+												}else{
+													((MainActivity)getActivity()).mPhotoFragment = ((MainActivity)getActivity()).mPhotoFragmentMap.get(999);
+												}
+											}
+
+
+											Bundle bundle = new Bundle();
+											ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+											bundle.putString("byteArray",
+													url);
+											ArrayList<Integer> visitList = new ArrayList<Integer>();
+											for(int i = 2 ; i < 5 ; i++){
+												String img_name= null;
+												if(position + i < ((MainActivity)getActivity()).imgUrl.size()){
+													img_name = ((MainActivity)getActivity()).imgUrl.get(position + i).get("name");
+												}
+												if(img_name == null){
+													int j = 1;
+													int count = 0;
+													//Log.d("Main Bytearray Test","suggestion"+String.valueOf(i-1)+" size is  :"+adapter.dictionary.size());
+													while(img_name == null && count < ((MainActivity)getActivity()).adapter.dictionary.size()){
+														j = (int)(Math.random() * ((MainActivity)getActivity()).adapter.dictionary.size());
+														count++;
+														if(!visitList.contains(j)){
+															img_name = (((MainActivity)getActivity()).imgUrl.get(j).get("name"));
+														}
+														//Log.d("Main Bytearray Test","count :"+ count +"j  :"+j+" size is  :"+adapter.dictionary.size());
+													}
+													visitList.add(j) ;
+													Log.d("Main Bytearray Test","suggestion"+String.valueOf(i-1) + " j is  :" + j);
+													bundle.putString("suggestion"+String.valueOf(i-1)+" position",String.valueOf(j-1));
+												}else{
+													bundle.putString("suggestion"+String.valueOf(i-1)+" position",String.valueOf(position+i-1));
+												}
+												if(byteArrayStream.toByteArray().length == 0){
+													Log.d("Photo delivery","Failed");
+												}
+												img_name = "http://140.115.51.177:8000/media/" + keyword + "/" + img_name;
+												bundle.putString("suggestion"+String.valueOf(i-1), img_name);
+
+											}
+											bundle.putString("personal","true");
+											bundle.putString("position",String.valueOf(position));
+											bundle.putString("score",((MainActivity)getActivity()).imgUrl.get(position+1).get("score"));
+											bundle.putString("keyword", keyword);
+											bundle.putBoolean("heart",true);
+											bundle.putString("name",name);
+											Log.d("personal image test",String.format("image show: %s, suggestion1: %s, suggestion2: %s, suggestion3: %s"
+													,bundle.getString("byteArray"),bundle.getString("suggestion1")
+													,bundle.getString("suggestion2"),bundle.getString("suggestion3")));
+
+											//Toast.makeText(getApplicationContext(),"From Main to Photo_detail",Toast.LENGTH_SHORT).show();
+
+											((MainActivity)getActivity()).personalFragmentStack.add(((MainActivity)getActivity()).mPhotoFragment);
+											((MainActivity)getActivity()).mPhotoFragment.setArguments(bundle);
+											if (((MainActivity)getActivity()).mPhotoFragment.isAdded()) {
+												((MainActivity)getActivity()).mFragmentManager.beginTransaction().remove(((MainActivity)getActivity()).mPhotoFragment).commit();
+												((MainActivity)getActivity()).mainFragmentStack.remove(((MainActivity)getActivity()).mPhotoFragment);
+											}
+											((MainActivity) getActivity()).mFragmentManager.executePendingTransactions();
+											((MainActivity) getActivity()).mFragmentManager.beginTransaction().add(android.R.id.tabcontent, ((MainActivity)getActivity()).mPhotoFragment, "photo").commit();
+											String s = "Photo Detail";
+											((MainActivity)getActivity()).textView.setText(s);
+											((MainActivity)getActivity()).mPhotoFragment = null;
+											Log.d("personal setting test",String.format("personal stack size: %d, ",((MainActivity)getActivity()).personalFragmentStack.size()));
+										}
+									}, 100);
 								}
-								((MainActivity) getActivity()).mFragmentManager.executePendingTransactions();
-								((MainActivity) getActivity()).mFragmentManager.beginTransaction().add(android.R.id.tabcontent, ((MainActivity)getActivity()).mPhotoFragment, "photo").commit();
-								String s = "Photo Detail";
-								((MainActivity)getActivity()).textView.setText(s);
-								((MainActivity)getActivity()).mPhotoFragment = null;
-								Log.d("personal setting test",String.format("personal stack size: %d, ",((MainActivity)getActivity()).personalFragmentStack.size()));
-							}
-						}, 100);
+							});
+							index[0]++;
+							if(index[0] >= collection.size()){ break; }
+						}
+						tableLayout.addView(tableRow);
 					}
-				});
-				index++;
-				if(index >= collection.size()){ break; }
+				}else{
+					initHandler.post(this);
+				}
 			}
-			tableLayout.addView(tableRow);
-		}
+		};
+		initHandler.post(run);
+
 	}
 }
 /*

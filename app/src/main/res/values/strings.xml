@@ -40,7 +40,7 @@
     <string name="check_password_again">Check password again</string>
     <string name="welecome_to_aicam">Welecome to AICam</string>
     <string name="suggestion">suggestion</string>
-    <string name="light_constast"><![CDATA[Bright & Constast:]]></string>
+    <string name="light_constast"><![CDATA[Suggestions are being processed... ]]></string>
     <string name="title">title</string>
     <string name="test">test</string>
 </resources>

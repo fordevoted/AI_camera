@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 	};
 	private final boolean[] endFlag = {false};
 
-	private String keyword="Taipei101", user_keyword, selectedFromList;
+	private String keyword="中壢火車站", user_keyword, selectedFromList;
 	private boolean isLoading, isLoadingFirst = true;
 
 	public List<Map<String,String>> imgUrl = new ArrayList<>();
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 	private GoogleMap mGoogleMap;
 	private List<Marker> markerList = new ArrayList();
 	private List<Bitmap> bitmapList = new ArrayList<>();
+	private List<Float> directionList = new ArrayList<>();
 
     public RecyclerViewAdapter adapter;
     private SearchHelper searchHelper = new SearchHelper();
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 						//recyclerView.smoothScrollToPosition(0);
 						//Log.d("home click test2",String.valueOf(mainFragmentStack.size()));
 						searchImage.setVisibility(View.VISIBLE);
+						setTabWidgetVisibility(View.VISIBLE);
 						Log.d("home click","case2");
 					}else if(!IsPersonal && (mainFragmentStack.get(mainFragmentStack.size()-1) != null)){
 						//Log.d("home click test3",String.valueOf(mainFragmentStack.size()));
@@ -202,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 					if(!IsPersonal && personalFragmentStack.get(personalFragmentStack.size()-1) ==null){
 						searchImage.setVisibility(View.GONE);
+						setTabWidgetVisibility(View.GONE);
 						//swipeRefreshLayout.setVisibility(View.GONE);
 						Handler personalFrameHandler = new Handler();
 
@@ -266,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 					//navigation.setItemIconTintList(null);
 					Log.d("main fragment test",String.format("main stack size: %d, personal stack size: %d, isPersonal: %s, ",
 							mainFragmentStack.size(),personalFragmentStack.size(),String.valueOf(IsPersonal)));
+
 					return true;
                 }
             }
@@ -533,6 +537,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 					public void run() {
 
 						searchImage.setVisibility(View.GONE);
+						setTabWidgetVisibility(View.GONE);
 						//swipeRefreshLayout.setVisibility(View.GONE);
 						mFragmentTransaction = mFragmentManager.beginTransaction();
 						if (mFragmentManager.findFragmentByTag("photo") != null) {
@@ -742,6 +747,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		httpConnect.execute(searchURL.toString());
 		Log.d("Main Location URL test",searchURL.toString());
 	}
+
+	private void setTabWidgetVisibility(int v){
+		findViewById(android.R.id.tabs).setVisibility(v);
+	}
 	private void imageNotFound(){
 		swipeRefreshLayout.setRefreshing(false);
 		//Log.d("test", "size is "+adapter.getItemCount());
@@ -792,11 +801,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 	public void onBackPressedHome(boolean switchFromPersonal) {
 		//super.onBackPressed();
+
 		IsPersonal = false;
 		if (switchFromPersonal) {
 			for (int i = personalFragmentStack.size() - 1; i >= 0; i--) {
 				Fragment fragment = personalFragmentStack.get(i);
 				if (fragment != null) {
+					((Personal_Page)fragment).initHandler.removeCallbacksAndMessages(null);
 					mFragmentManager.beginTransaction().remove(personalFragmentStack.get(i)).commit();
 					personalFragmentStack.remove(i);
 					Log.d("main kill fragment test", "kill personal fragment");
@@ -831,7 +842,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 	public void onBackPressedPersonal(boolean switchFromMain){
 		IsPersonal = true;
     	if(!switchFromMain){
-			mFragmentManager.beginTransaction().remove(personalFragmentStack.get(personalFragmentStack.size()-1)).commit();
+			Fragment fragment = personalFragmentStack.get(personalFragmentStack.size()-1);
+			((Personal_Page)fragment).initHandler.removeCallbacksAndMessages(null);
+			mFragmentManager.beginTransaction().remove(fragment).commit();
 			personalFragmentStack.remove(personalFragmentStack.size()-1);
 		}
     	if (personalFragmentStack.get(personalFragmentStack.size()-1)!= null && IsPersonal){
@@ -897,6 +910,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 			textView.setText(("POI nearby " + keyword));
 		}
 		searchImage.setVisibility(View.VISIBLE);
+		setTabWidgetVisibility(View.VISIBLE);
 	}
 
 	@SuppressLint("ApplySharedPref")
@@ -998,7 +1012,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		bn_test.setOnClickListener((view)->{
 			double lat = latitude[0] +Math.random()*0.1;
 			double longt = longtitude[0] + Math.random()*0.1;
-			addMarker(String.valueOf(lat),String.valueOf(longt),"test","cat1",Math.random());
+			addMarker(String.valueOf(lat),String.valueOf(longt),"test","cat1",
+					new float[]{(float)Math.random(),(float)Math.random(),(float)Math.random()});
 			moveCamera();
 		});
 		mGoogleMap = googleMap;
@@ -1015,7 +1030,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 					data_list.get(i).get("long").toString(),
 					data_list.get(i).get("description").toString(),
 					iconName[i],
-					Math.random()
+					new float[]{(float)((Math.random()*1000) % 360),(float)Math.random(),(float)Math.random()}
 					);
 		}
 		moveCamera();
@@ -1037,7 +1052,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		mGoogleMap.animateCamera(cu);
 	}
 
-	private void addMarker(String latitude, String longtitude, String title, String iconName,double direction){
+	private void addMarker(String latitude, String longtitude, String title, String iconName,float[] direction){
 		BitmapDrawable bitmapDrawable = (BitmapDrawable) ContextCompat.getDrawable(getApplicationContext(),getResources().
 				getIdentifier(iconName,"drawable",getApplicationContext().getPackageName()));
 		Bitmap bitmap = Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(),100,150,true);
@@ -1046,10 +1061,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 						Double.parseDouble(longtitude)))
 				.title(title)
 				.snippet("經緯度 : "+latitude + ", " + longtitude)
-				.zIndex((float)direction)
+				.zIndex(direction[1])
 				.icon(BitmapDescriptorFactory.fromBitmap(bitmap))
 		));
 		bitmapList.add(bitmap);
+		directionList.add(direction[0]);
 	}
 	@Override
 	public View getInfoWindow(Marker marker) {
@@ -1058,9 +1074,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		TextView tv_title = view.findViewById(R.id.tv_title);
 		TextView tv_content = view.findViewById(R.id.tv_content);
 		TextView tv_angleDirection = view.findViewById(R.id.tv_angleDirection);
+		TextView tv_direction = view.findViewById(R.id.tv_direction);
 		ImageView iv_poi_image = view.findViewById(R.id.iv_poi_image);
 		tv_title.setText(marker.getTitle());
 		tv_content.setText(marker.getSnippet());
+		Map<String,Object> direction  = new HashMap<>();
 		tv_angleDirection.setText(("傾斜角 : " + marker.getZIndex()));
 
 		BitmapDrawable bitmapDrawable = (BitmapDrawable) ContextCompat.getDrawable(getApplicationContext(),R.drawable.cat1);
@@ -1069,6 +1087,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		for(int i = 0 ; i < markerList.size() ; i++){
 			if(marker.equals(markerList.get(i))){
 				iv_poi_image.setImageBitmap(bitmapList.get(i));
+				float rotation = (float) (Math.round( directionList.get(i) * 100)) / 100;
+				if(rotation > 270){
+					direction.put("direction","西方");
+					direction.put("angle",(float) (Math.round( (rotation - 270) * 100)) / 100);
+				}else if (rotation > 180){
+					direction.put("direction","南方");
+					direction.put("angle",(float) (Math.round( (rotation - 180) * 100)) / 100);
+				}else if (rotation > 90){
+					direction.put("direction","東方");
+					direction.put("angle",(float) (Math.round( (rotation - 90) * 100)) / 100);
+				}else{
+					direction.put("direction","北方");
+					direction.put("angle",rotation);
+				}
+				tv_direction.setText(("方位：" +
+						"偏向"+
+						direction.get("direction").toString() +
+						direction.get("angle").toString()+
+						" ( "+rotation+" )"));
 				break;
 			}
 		}
@@ -1082,9 +1119,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 		TextView tv_title = view.findViewById(R.id.tv_title);
 		TextView tv_content = view.findViewById(R.id.tv_content);
 		TextView tv_angleDirection = view.findViewById(R.id.tv_angleDirection);
+		TextView tv_direction = view.findViewById(R.id.tv_direction);
 		tv_title.setText(marker.getTitle());
 		tv_content.setText(marker.getSnippet());
+		Map<String,Object> direction  = new HashMap<>();
 		tv_angleDirection.setText(("傾斜角 : " + Math.random()));
+		for(int i = 0 ; i < markerList.size() ; i++){
+			if(marker.equals(markerList.get(i))){
+				float rotation = (float) (Math.round( directionList.get(i) * 100)) / 100;
+				if(rotation > 270){
+					direction.put("direction","西方");
+					direction.put("angle",(float) (Math.round( (rotation - 270) * 100)) / 100);
+				}else if (rotation > 180){
+					direction.put("direction","南方");
+					direction.put("angle",(float) (Math.round( (rotation - 180) * 100)) / 100);
+				}else if (rotation > 90){
+					direction.put("direction","東方");
+					direction.put("angle",(float) (Math.round( (rotation - 90) * 100)) / 100);
+				}else{
+					direction.put("direction","北方");
+					direction.put("angle",rotation);
+				}
+				tv_direction.setText(("方位：" +
+						"偏向"+
+						direction.get("direction").toString() +
+						direction.get("angle").toString()+
+						" ( "+rotation+" )"));
+				break;
+			}
+		}
 		return view;
 	}
 }

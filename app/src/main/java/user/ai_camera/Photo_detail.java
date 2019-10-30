@@ -35,6 +35,7 @@ public class Photo_detail extends Fragment {
 
 	private Bitmap bitmap;
 	private static final BitmapFactory BitmapFactory = null;
+	private static final int VIEW_BIAS = 950;
 
 	public ImageButton ib_photo, ib_heart, ib_light, ib_share;
 	public TextView tv_suggestion, tv_introduce;
@@ -215,7 +216,7 @@ public class Photo_detail extends Fragment {
 						iv.setImageBitmap(Bitmap.createScaledBitmap(((BitmapDrawable)(ib_photo.getDrawable())).getBitmap(), iv.getMeasuredWidth(), iv.getMeasuredHeight(),true));
 					}
 				});
-				View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.main_layout, null);
+				View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_detail,null);
 				mPopupWindow = new BackgroundBlurPopupWindow(v , WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, getActivity(), true);
 				mPopupWindow.setFocusable(true);
 				mPopupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -246,7 +247,7 @@ public class Photo_detail extends Fragment {
 				sharingIntent.setType("text/plain");
 				//BitmapDrawable bitmapDrawable = (BitmapDrawable) ib_photo.getDrawable();
 				//Bitmap shareBody = bitmapDrawable.getBitmap();
-				String shareInstroduce = "Look at this photo on AI Camera ! and check more detail on: "
+				String shareInstroduce = "Look at this photo on AI Camera ! Check more detail on: "
 						+"\nhttp://140.115.51.177:8000/media/" + keyword + "/" + name;
 				sharingIntent.putExtra(Intent.EXTRA_TEXT, shareInstroduce);
 				startActivity(Intent.createChooser(sharingIntent, "Share To"));
@@ -282,11 +283,14 @@ public class Photo_detail extends Fragment {
 				ratingBar.setNumStars(10);
 				ratingBar.setStepSize(1);
 
-				View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.main_layout, null);
+				View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_detail, null);
 				mPopupWindow = new PopupWindow(v , WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
 				mPopupWindow.setFocusable(true);
 				mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-				mPopupWindow.showAtLocation(rootView, Gravity.START, 10, privateRatingBar.getScrollY());//弹出PopupWindow
+				int[] ratingBarlocation = new int[2];
+				privateRatingBar.getLocationOnScreen(ratingBarlocation);
+				mPopupWindow.showAtLocation(rootView, Gravity.START, 10, ratingBarlocation[1] - VIEW_BIAS);//弹出PopupWindow
+				Log.d("temp test now ", String.valueOf(ratingBarlocation[1]));
 				if(!tv_privateRating.getText().equals("")) {
 					ratingBar.setRating((int)Double.parseDouble(tv_privateRating.getText().toString()));
 				}

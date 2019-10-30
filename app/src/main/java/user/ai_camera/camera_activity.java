@@ -72,6 +72,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class camera_activity extends Activity  implements View.OnClickListener{
 
@@ -80,6 +81,7 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 	private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 	private final static String AICAM = "AICam_";
 	private final static String TAG = "camera test";
+	private final static String CROP_CATUION = "✂ best crop suggest for you !";
     // show the photo in  correct direction
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -263,6 +265,9 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 		ib_iso = findViewById(R.id.ib_iso);
 		ib_bright = findViewById(R.id.ib_bright);
 		ib_contrast = findViewById(R.id.ib_contrast);
+		ib_iso.setVisibility(View.GONE);
+		ib_bright.setVisibility(View.GONE);
+		ib_contrast.setVisibility(View.GONE);
 		seekBar = findViewById(R.id.seekBar);
 
 
@@ -424,7 +429,7 @@ public class camera_activity extends Activity  implements View.OnClickListener{
                             }
 					}
 				};
-				// the runnable run to get direction 
+				// the runnable run to get direction
 				Runnable run = new Runnable() {
 					@Override
 					public void run() {
@@ -436,14 +441,15 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 							final float[] rotationMatrix = new float[9];
 							final float[] orientationAngles = new float[3];
 
-							SensorManager sensorManager =   (SensorManager) getSystemService(SENSOR_SERVICE);
+							final AtomicReference<SensorManager> sensorManager = new AtomicReference<>((SensorManager) getSystemService(SENSOR_SERVICE));
+
 							SensorEventListener accListener = new SensorEventListener() {
 								@Override
 								public void onSensorChanged(SensorEvent sensorEvent) {
 									System.arraycopy(sensorEvent.values, 0, accelerometerReading,
 											0, accelerometerReading.length);
 									record[0] = true;
-									sensorManager.unregisterListener(this);
+									sensorManager.get().unregisterListener(this);
 								}
 
 								@Override
@@ -457,7 +463,7 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 									System.arraycopy(sensorEvent.values, 0, magnetometerReading,
 											0, magnetometerReading.length);
 									record[1] = true;
-									sensorManager.unregisterListener(this);
+									sensorManager.get().unregisterListener(this);
 								}
 
 								@Override
@@ -466,16 +472,17 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 								}
 							};
 
-							Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+							Sensor accelerometer = sensorManager.get().getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 							if (accelerometer != null) {
-								sensorManager.registerListener(accListener, accelerometer,
-										SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+								sensorManager.get().registerListener(accListener, accelerometer,
+										SensorManager.SENSOR_DELAY_FASTEST, SensorManager.SENSOR_DELAY_UI);
 							}
-							Sensor magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+							Sensor magneticField = sensorManager.get().getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 							if (magneticField != null) {
-								sensorManager.registerListener(magListener, magneticField,
-										SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+								sensorManager.get().registerListener(magListener, magneticField,
+										SensorManager.SENSOR_DELAY_FASTEST, SensorManager.SENSOR_DELAY_UI);
 							}
+
 							samHandler.postDelayed(()->{
 								if(record[0] && record[1] ){
 									SensorManager.getRotationMatrix(rotationMatrix, null,
@@ -546,8 +553,8 @@ public class camera_activity extends Activity  implements View.OnClickListener{
                 return false;
             }
         });
-        
-        
+
+
         ib_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -574,7 +581,7 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 
 				View v = getLayoutInflater().inflate(R.layout.suggestion_pop_layout, null);
 				View rootView = LayoutInflater.from(camera_activity.this).inflate(R.layout.camera_layout, null);
-				
+
 				BackgroundBlurPopupWindow mPopupWindow;
 				mPopupWindow = new BackgroundBlurPopupWindow(v , (int)(size.x * 0.8), (int)(size.y * 0.75), camera_activity.this, true);
 
@@ -600,7 +607,7 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 												(int) (size.y * 0.4d),
 												true));
 										tv_suggestion.setText(str);
-										tv_suggestion.setTextSize((int)(size.x * 0.03));
+										tv_suggestion.setTextSize((int)(size.y * 0.02));
 										ib_save_suggestion.setVisibility(View.VISIBLE);
 										Log.d("Camera test","end");
 									}else{
@@ -620,6 +627,9 @@ public class camera_activity extends Activity  implements View.OnClickListener{
 										.append("\n  Bright    ").append(suggestion.get(0).get(1).intValue() > 0 ? "+ " + suggestion.get(0).get(1).intValue() : suggestion.get(0).get(1).intValue())
 										.append("\n  Contrast    ").append(suggestion.get(0).get(2).intValue() > 0 ? "+ " + suggestion.get(0).get(2).intValue() : suggestion.get(0).get(2).intValue())
 								;
+								if(httpclient.isPhotoCrop){
+									str.append("\n" + CROP_CATUION);
+								}
 							}
 						}else{
 							samHandler.postDelayed(this,100);
@@ -1007,9 +1017,9 @@ public class camera_activity extends Activity  implements View.OnClickListener{
     private void setViewVisible(boolean set){
         if(set){
             ib_camera.setVisibility(View.GONE);
-            ib_bright.setVisibility(View.GONE);
-			ib_iso.setVisibility(View.GONE);
-			ib_contrast.setVisibility(View.GONE);
+            //ib_bright.setVisibility(View.GONE);
+			//ib_iso.setVisibility(View.GONE);
+			//ib_contrast.setVisibility(View.GONE);
             ib_image.setVisibility(View.GONE);
             ib_back.setVisibility(View.VISIBLE);
             ib_save.setVisibility(View.VISIBLE);
@@ -1028,9 +1038,9 @@ public class camera_activity extends Activity  implements View.OnClickListener{
             if(imageVisibleSemarphore){
 				ib_image.setVisibility(View.VISIBLE);
 			}
-			ib_bright.setVisibility(View.VISIBLE);
-			ib_iso.setVisibility(View.VISIBLE);
-			ib_contrast.setVisibility(View.VISIBLE);
+			//ib_bright.setVisibility(View.VISIBLE);
+			//ib_iso.setVisibility(View.VISIBLE);
+			//ib_contrast.setVisibility(View.VISIBLE);
 			ib_back.setVisibility(View.GONE);
             ib_save.setVisibility(View.GONE);
             ib_imageQuery.setVisibility(View.VISIBLE);

@@ -51,6 +51,8 @@ public class Upload_image extends Activity {
 	@InjectView(R.id.ib_score_light)
 	ImageButton ib_scoreLight;
 	private final static String AICAM = "AICam_";
+	private final static String CROP_CATUION = "✂ best crop suggest for you !";
+
 	public PostUploadTask httpclient;
 	public String keyword = "userUpload";
 	private String authentication;
@@ -271,7 +273,7 @@ public class Upload_image extends Activity {
 												(int) (size.y * 0.4d),
 												true));
 										tv_suggestion.setText(str);
-										tv_suggestion.setTextSize((int)(size.x * 0.03));
+										tv_suggestion.setTextSize((int)(size.y * 0.02));
 										ib_save_suggestion.setVisibility(View.VISIBLE);
 										Log.d("Camera test","end");
 									}else{
@@ -291,6 +293,9 @@ public class Upload_image extends Activity {
 										.append("\n  Bright    ").append(suggestion.get(0).get(1).intValue() > 0 ? "+ " + suggestion.get(0).get(1).intValue() : suggestion.get(0).get(1).intValue())
 										.append("\n  Contrast    ").append(suggestion.get(0).get(2).intValue() > 0 ? "+ " + suggestion.get(0).get(2).intValue() : suggestion.get(0).get(2).intValue())
 								;
+							}
+							if(httpclient.isPhotoCrop){
+								str.append("\n" + CROP_CATUION);
 							}
 						}else{
 							samHandler.postDelayed(this,100);

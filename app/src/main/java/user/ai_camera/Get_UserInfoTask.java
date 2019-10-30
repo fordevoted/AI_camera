@@ -51,14 +51,14 @@ public class Get_UserInfoTask extends AsyncTask<String, Void, String> {
 			 if(!jObject.getString("user_state").equals("None")){
 				 user_state = jObject.getString("user_state");
 			 }if(!jObject.getString("face_image").equals("None")){
-				profile = "http://140.115.52.194:8000/media/" + jObject.getString("face_image");
+				profile = "http://140.115.51.177:8000/media/" + jObject.getString("face_image");
 			}
 			 for (int i = 0 ; i < jObject.getJSONArray("favorite").length() ; i++) {
 				Log.d("FAVTask Results Name", jObject.getJSONArray("favorite").getString(i));
 				Map<String, String> m = new HashMap();
 				String info = jObject.getJSONArray("favorite").getString(i);
 				String[] value = info.split("/");
-				m.put("url", "http://140.115.52.194:8000/media/" + info);
+				m.put("url", "http://140.115.51.177:8000/media/" + info);
 				m.put("position","999");
 				m.put("keyword", value[0]);
 				m.put("name",value[1]);

@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JustPostForCriticTask extends AsyncTask<String, Void, String> {
@@ -96,7 +95,7 @@ public class JustPostForCriticTask extends AsyncTask<String, Void, String> {
 			httppost.setHeader("authentication",authentication);
 			httppost.setEntity(MultipartEntityBuilder.create().addPart("image", new ByteArrayBody(data, stringBuilder.toString()))
 					.addTextBody("location",keyword)
-					.addTextBody("direction", Arrays.toString(direction))
+					.addTextBody("direction", String.valueOf(direction[0]))
 					.build()
 			);
 

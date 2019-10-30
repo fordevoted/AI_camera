@@ -15,6 +15,8 @@ import android.util.Log;
 
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import java.util.List;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class SearchHelper {
@@ -53,7 +55,6 @@ public class SearchHelper {
             requestLocationAccessPermission(context);
         }
 
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         final double[] longitude = new double[1];//{location.getLongitude()};
         final double[] latitude = new double[1];//{location.getLatitude()};
 
@@ -75,16 +76,26 @@ public class SearchHelper {
         };
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10, locationListener);
 
+        List<String> providers = locationManager.getProviders(true);
+        for(String provider : providers){
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location != null){
+                longitude[0] = location.getLongitude();
+                latitude[0] = location.getLatitude();
+                break;
+            }
+        }
         // setting  search API
 
         //for test
-        latitude[0] = 121.5622835;
-        longitude[0] = 25.0339687;
+       // latitude[0] = 121.5622835;
+        //longitude[0] = 25.0339687;
 
         Log.d("lat",longitude[0]+"  "+latitude[0]);
         String searchURL ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+
-                longitude[0]+","+latitude[0]+"&radius=500&types=restaurant&key="+MainActivity.KEY;
+                latitude[0]+","+longitude[0]+"&radius=500&types=restaurant&key="+MainActivity.KEY;
 
         //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location= -122.08400000000002,37.421998333333335&radius=15000&type=restaurant&key=AIzaSyDrfOr8hxLrb1LhLn28fJvQvdfHu53oXPc"
 

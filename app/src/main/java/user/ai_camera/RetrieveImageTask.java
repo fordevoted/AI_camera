@@ -18,6 +18,7 @@ public class RetrieveImageTask extends AsyncTask<String, String, Bitmap> {
     private ImageButton ib_photo;
     private Point size;
     public Bitmap img;
+    private Bitmap bitmap;
     private ImageView iv_pass_unlike_or_suggestion;
     public boolean update_ib_photo = false;
 
@@ -30,6 +31,12 @@ public class RetrieveImageTask extends AsyncTask<String, String, Bitmap> {
         this.ib = null;
         this.IsFirstPosition = IsFirstPosition;
         this.size = size;
+    }
+    public RetrieveImageTask(Point size, boolean IsFirstPosition,Bitmap bmp){
+        this.ib = null;
+        this.IsFirstPosition = IsFirstPosition;
+        this.size = size;
+        this.bitmap = bmp;
     }
     public RetrieveImageTask(ImageButton ib, Point size, boolean IsFirstPosition,boolean IsCollection){
         this.ib = ib;
@@ -63,7 +70,7 @@ public class RetrieveImageTask extends AsyncTask<String, String, Bitmap> {
      */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public Bitmap doInBackground(String... urls) {
-        Bitmap bmp = null;
+        Bitmap bmp  = null;
         try {
             Log.d("RTask image url",urls[0]);
             bmp = BitmapFactory.decodeStream(new URL(urls[0]).openConnection().getInputStream());
@@ -73,7 +80,7 @@ public class RetrieveImageTask extends AsyncTask<String, String, Bitmap> {
         if (bmp != null) {
             //Log.d("RTask image response", "Image load success");
         } else {
-            Log.d("RTask image response", "Image load failed");
+            bmp = bitmap;
         }
         return  bmp;
     }
@@ -96,7 +103,7 @@ public class RetrieveImageTask extends AsyncTask<String, String, Bitmap> {
             }
         }else { // this.IsFirstPosition & this.IsCollection
             if(ib != null){
-                this.ib.setImageBitmap(Bitmap.createScaledBitmap(img, (int) (size.x*0.25d), (int) (size.x * 0.25d ), true));
+                ib.setImageBitmap(Bitmap.createScaledBitmap(img, (int) (size.x*0.25d), (int) (size.x * 0.25d ), true));
                 iv_pass_unlike_or_suggestion.setVisibility(View.GONE);
             }
         }

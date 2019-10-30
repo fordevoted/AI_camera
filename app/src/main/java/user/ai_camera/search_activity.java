@@ -120,6 +120,7 @@ public class search_activity extends AppCompatActivity {
 					Log.d("Search Keyword ResultBack Test","in");
 					listAdapter = new ArrayAdapter<String>(search_activity.this, android.R.layout.simple_list_item_1, httpConnect.resultBack());
 					listView.setAdapter(listAdapter);
+					httpConnect = new HttpAsyncTask();
 					samHandler.removeCallbacks(this);
 				}else{
 					samHandler.postDelayed(this, 100);
